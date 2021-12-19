@@ -1,0 +1,294 @@
+Creating log dir...
+Running benchmark against 8.8.8.8, logging to /root/dns_testing/logs/1639617259/control.txt
+28.19240093231201
+Updating local DNS server to kresd_dot_dnssec.nix...
+setting up /etc...
+kresd config at /nix/store/jwx88xc0611fhpdcknlg756zjfbf8jks-kresd.conf
+---------------------------
+net.listen('::1', 53, { kind = 'dns', freebind = true })
+net.listen('127.0.0.1', 53, { kind = 'dns', freebind = true })
+cache.size = 60*MB
+policy.add(policy.all(policy.TLS_FORWARD({{'8.8.8.8', hostname='dns.google'}})))
+---------------------------
+knot-re+  147932 29.0  1.5  87504 13824 ?        Ss   01:15   0:00 /nix/store/sgvcf48c0wz0rncb25wx0jbakgy195aw-knot-resolver-5.3.2/bin/kresd --noninteractive -c /nix/store/sgvcf48c0wz0rncb25wx0jbakgy195aw-knot-resolver-5.3.2/lib/knot-resolver/distro-preconfig.lua -c /nix/store/jwx88xc0611fhpdcknlg756zjfbf8jks-kresd.conf
+root      147938  0.0  0.2 223068  1976 pts/4    S+   01:15   0:00 grep kresd
+Running benchmark against 127.0.0.1, logging to /root/dns_testing/logs/1639617259/kresd_dot_dnssec.nix.txt
+89.3251895904541
+
+Updating local DNS server to kresd_dot_nodnssec.nix...
+setting up /etc...
+kresd config at /nix/store/0p28pdkd125mdm26s236xwi76h95kqs7-kresd.conf
+---------------------------
+net.listen('::1', 53, { kind = 'dns', freebind = true })
+net.listen('127.0.0.1', 53, { kind = 'dns', freebind = true })
+cache.size = 60*MB
+policy.add(policy.all(policy.TLS_FORWARD({{'8.8.8.8', hostname='dns.google'}})))
+trust_anchors.remove('.')
+---------------------------
+knot-re+  148673  6.6  1.4  87068 13204 ?        Ss   01:18   0:00 /nix/store/sgvcf48c0wz0rncb25wx0jbakgy195aw-knot-resolver-5.3.2/bin/kresd --noninteractive -c /nix/store/sgvcf48c0wz0rncb25wx0jbakgy195aw-knot-resolver-5.3.2/lib/knot-resolver/distro-preconfig.lua -c /nix/store/0p28pdkd125mdm26s236xwi76h95kqs7-kresd.conf
+root      148679  0.0  0.2 223068  2032 pts/4    S+   01:18   0:00 grep kresd
+Running benchmark against 127.0.0.1, logging to /root/dns_testing/logs/1639617259/kresd_dot_nodnssec.nix.txt
+31.09574317932129
+
+Updating local DNS server to kresd_udp_dnssec.nix...
+setting up /etc...
+kresd config at /nix/store/6wf5q5bi9pcnjgadwwa8yyx7xbn3209c-kresd.conf
+---------------------------
+net.listen('::1', 53, { kind = 'dns', freebind = true })
+net.listen('127.0.0.1', 53, { kind = 'dns', freebind = true })
+cache.size = 60*MB
+policy.add(policy.all(policy.FORWARD({'8.8.8.8'})))
+---------------------------
+knot-re+  149411  0.0  1.0  84500 10060 ?        Ss   01:19   0:00 /nix/store/sgvcf48c0wz0rncb25wx0jbakgy195aw-knot-resolver-5.3.2/bin/kresd --noninteractive -c /nix/store/sgvcf48c0wz0rncb25wx0jbakgy195aw-knot-resolver-5.3.2/lib/knot-resolver/distro-preconfig.lua -c /nix/store/6wf5q5bi9pcnjgadwwa8yyx7xbn3209c-kresd.conf
+root      149417  0.0  0.2 223068  2060 pts/4    S+   01:19   0:00 grep kresd
+Running benchmark against 127.0.0.1, logging to /root/dns_testing/logs/1639617259/kresd_udp_dnssec.nix.txt
+83.81640911102295
+
+Updating local DNS server to kresd_udp_nodnssec.nix...
+setting up /etc...
+kresd config at /nix/store/0cl9fymv6blrag5swcczrmrmyzhs5j4v-kresd.conf
+---------------------------
+net.listen('::1', 53, { kind = 'dns', freebind = true })
+net.listen('127.0.0.1', 53, { kind = 'dns', freebind = true })
+cache.size = 60*MB
+policy.add(policy.all(policy.FORWARD({'8.8.8.8'})))
+trust_anchors.remove('.')
+---------------------------
+knot-re+  150150  0.0  1.0  83948  9456 ?        Ss   01:22   0:00 /nix/store/sgvcf48c0wz0rncb25wx0jbakgy195aw-knot-resolver-5.3.2/bin/kresd --noninteractive -c /nix/store/sgvcf48c0wz0rncb25wx0jbakgy195aw-knot-resolver-5.3.2/lib/knot-resolver/distro-preconfig.lua -c /nix/store/0cl9fymv6blrag5swcczrmrmyzhs5j4v-kresd.conf
+root      150156  0.0  0.2 223068  1968 pts/4    S+   01:22   0:00 grep kresd
+Running benchmark against 127.0.0.1, logging to /root/dns_testing/logs/1639617259/kresd_udp_nodnssec.nix.txt
+30.396342277526855
+
+Updating local DNS server to dnsmasq_udp_dnssec.nix...
+setting up /etc...
+Dnsmasq version 2.85  Copyright (c) 2000-2021 Simon Kelley
+Compile time options: IPv6 GNU-getopt DBus no-UBus no-i18n IDN DHCP DHCPv6 no-Lua TFTP conntrack ipset auth cryptohash DNSSEC loop-detect inotify dumpfile
+
+This software comes with ABSOLUTELY NO WARRANTY.
+Dnsmasq is free software, and you are welcome to redistribute it
+under the terms of the GNU General Public License, version 2 or 3.
+dnsmasq config at /nix/store/ar4cyasb2zci90g83093kqrvkd43hfyv-dnsmasq.conf
+---------------------------
+dhcp-leasefile=/var/lib/dnsmasq/dnsmasq.leases
+
+server=8.8.8.8
+
+no-resolv
+clear-on-reload
+dnssec
+trust-anchor=.,20326,8,2,E06D44B80B8F1D39A95C0B0D7C65D08458E880409BBC683457104237C7F8EC8D
+
+---------------------------
+dnsmasq   150950  0.0  0.3   7964  2856 ?        Ss   01:24   0:00 /nix/store/nl5cm7z9rc29pzg0267gwcdrc0hr4mmb-dnsmasq-2.85/bin/dnsmasq -k --enable-dbus --user=dnsmasq -C /nix/store/ar4cyasb2zci90g83093kqrvkd43hfyv-dnsmasq.conf
+root      150960  0.0  0.2 223068  1960 pts/4    S+   01:24   0:00 grep dnsmasq
+Running benchmark against 127.0.0.1, logging to /root/dns_testing/logs/1639617259/dnsmasq_udp_dnssec.nix.txt
+Unable to resolve admanmedia.com: All nameservers failed to answer the query admanmedia.com. IN A: Server 127.0.0.1 UDP port 53 answered SERVFAIL
+59.137940406799316
+"0"
+"1010"
+
+Updating local DNS server to dnsmasq_udp_nodnssec.nix...
+setting up /etc...
+Dnsmasq version 2.85  Copyright (c) 2000-2021 Simon Kelley
+Compile time options: IPv6 GNU-getopt DBus no-UBus no-i18n IDN DHCP DHCPv6 no-Lua TFTP conntrack ipset auth cryptohash DNSSEC loop-detect inotify dumpfile
+
+This software comes with ABSOLUTELY NO WARRANTY.
+Dnsmasq is free software, and you are welcome to redistribute it
+under the terms of the GNU General Public License, version 2 or 3.
+dnsmasq config at /nix/store/971pzmdlzm7fc05vz499am6n3dbahya3-dnsmasq.conf
+---------------------------
+dhcp-leasefile=/var/lib/dnsmasq/dnsmasq.leases
+
+server=8.8.8.8
+
+no-resolv
+clear-on-reload
+
+---------------------------
+dnsmasq   151713  0.0  0.3   7964  2852 ?        Ss   01:26   0:00 /nix/store/nl5cm7z9rc29pzg0267gwcdrc0hr4mmb-dnsmasq-2.85/bin/dnsmasq -k --enable-dbus --user=dnsmasq -C /nix/store/971pzmdlzm7fc05vz499am6n3dbahya3-dnsmasq.conf
+root      151723  0.0  0.2 223068  1980 pts/4    S+   01:26   0:00 grep dnsmasq
+Running benchmark against 127.0.0.1, logging to /root/dns_testing/logs/1639617259/dnsmasq_udp_nodnssec.nix.txt
+29.97291088104248
+"0"
+"1000"
+
+Updating local DNS server to unbound_dot_dnssec.nix...
+setting up /etc...
+Version 1.13.1
+
+Configure line: --disable-static --prefix=/nix/store/lrmskvs64ahj7jli7b4zg9fmh7g5lfqi-unbound-1.13.1 --bindir=/nix/store/lrmskvs64ahj7jli7b4zg9fmh7g5lfqi-unbound-1.13.1/bin --sbindir=/nix/store/lrmskvs64ahj7jli7b4zg9fmh7g5lfqi-unbound-1.13.1/sbin --includedir=/nix/store/lrmskvs64ahj7jli7b4zg9fmh7g5lfqi-unbound-1.13.1/include --oldincludedir=/nix/store/lrmskvs64ahj7jli7b4zg9fmh7g5lfqi-unbound-1.13.1/include --mandir=/nix/store/p1y74qc47lzca9hhpl7zz8d9hfwglaqc-unbound-1.13.1-man/share/man --infodir=/nix/store/lrmskvs64ahj7jli7b4zg9fmh7g5lfqi-unbound-1.13.1/share/info --docdir=/nix/store/lrmskvs64ahj7jli7b4zg9fmh7g5lfqi-unbound-1.13.1/share/doc/unbound --libdir=/nix/store/a7qb34d4dgvh63qcj7lj28zg5rndh1i4-unbound-1.13.1-lib/lib --libexecdir=/nix/store/a7qb34d4dgvh63qcj7lj28zg5rndh1i4-unbound-1.13.1-lib/libexec --localedir=/nix/store/a7qb34d4dgvh63qcj7lj28zg5rndh1i4-unbound-1.13.1-lib/share/locale --with-ssl=/nix/store/y75rpdkr5cfr59jqy6bsrhwhq6pcn0xi-openssl-1.1.1l-dev --with-libexpat=/nix/store/qxfaz48ggr53s63n4n1kjr647szszikq-expat-2.2.10-dev --with-libevent=/nix/store/3wbypnkg7xry10qmzz9fs8ngalr9ldxv-libevent-2.1.12-dev --localstatedir=/var --sysconfdir=/etc --sbindir=${out}/bin --with-rootkey-file=/nix/store/993g19if5cj81vzjkrlrlxa657r35x89-dns-root-data-2019-01-11/root.key --enable-pie --enable-relro-now
+Linked libs: libevent 2.1.12-stable (it uses epoll), OpenSSL 1.1.1l  24 Aug 2021
+Linked modules: dns64 respip validator iterator
+
+BSD licensed, see LICENSE in source package for details.
+Report bugs to unbound-bugs@nlnetlabs.nl or https://github.com/NLnetLabs/unbound/issues
+Unbound config at /etc/unbound/unbound.conf:
+---------------------------
+server:
+
+  access-control: 127.0.0.1/24 allow
+  auto-trust-anchor-file: /var/lib/unbound/root.key
+  chroot: ""
+  directory: /var/lib/unbound
+  do-daemonize: no
+  interface: 127.0.0.1
+  ip-freebind: yes
+  pidfile: ""
+  tls-cert-bundle: /etc/ssl/certs/ca-certificates.crt
+  username: unbound
+  verbosity: 0
+forward-zone:
+  forward-addr: 8.8.8.8@853#dns.google
+  forward-tls-upstream: yes
+  name: .
+remote-control:
+  control-cert-file: /var/lib/unbound/unbound_control.pem
+  control-enable: no
+  control-interface: 127.0.0.1
+  control-interface: ::1
+  control-key-file: /var/lib/unbound/unbound_control.key
+  server-cert-file: /var/lib/unbound/unbound_server.pem
+  server-key-file: /var/lib/unbound/unbound_server.key
+
+---------------------------
+root      148682  0.0  0.0      0     0 ?        I    01:18   0:00 [kworker/u8:4-events_unbound]
+root      151669  0.0  0.0      0     0 ?        I    01:26   0:00 [kworker/u8:2-events_unbound]
+unbound   152467  0.0  1.3  18600 11932 ?        Ss   01:27   0:00 /nix/store/ljfd7bk8hsksddggfq7b0png3w5a3ca2-unbound-1.13.1/bin/unbound -p -d -c /etc/unbound/unbound.conf
+root      152471  0.0  0.2 223068  2028 pts/4    S+   01:27   0:00 grep unbound
+Running benchmark against 127.0.0.1, logging to /root/dns_testing/logs/1639617259/unbound_dot_dnssec.nix.txt
+58.04431438446045
+
+Updating local DNS server to unbound_dot_nodnssec.nix...
+setting up /etc...
+Version 1.13.1
+
+Configure line: --disable-static --prefix=/nix/store/lrmskvs64ahj7jli7b4zg9fmh7g5lfqi-unbound-1.13.1 --bindir=/nix/store/lrmskvs64ahj7jli7b4zg9fmh7g5lfqi-unbound-1.13.1/bin --sbindir=/nix/store/lrmskvs64ahj7jli7b4zg9fmh7g5lfqi-unbound-1.13.1/sbin --includedir=/nix/store/lrmskvs64ahj7jli7b4zg9fmh7g5lfqi-unbound-1.13.1/include --oldincludedir=/nix/store/lrmskvs64ahj7jli7b4zg9fmh7g5lfqi-unbound-1.13.1/include --mandir=/nix/store/p1y74qc47lzca9hhpl7zz8d9hfwglaqc-unbound-1.13.1-man/share/man --infodir=/nix/store/lrmskvs64ahj7jli7b4zg9fmh7g5lfqi-unbound-1.13.1/share/info --docdir=/nix/store/lrmskvs64ahj7jli7b4zg9fmh7g5lfqi-unbound-1.13.1/share/doc/unbound --libdir=/nix/store/a7qb34d4dgvh63qcj7lj28zg5rndh1i4-unbound-1.13.1-lib/lib --libexecdir=/nix/store/a7qb34d4dgvh63qcj7lj28zg5rndh1i4-unbound-1.13.1-lib/libexec --localedir=/nix/store/a7qb34d4dgvh63qcj7lj28zg5rndh1i4-unbound-1.13.1-lib/share/locale --with-ssl=/nix/store/y75rpdkr5cfr59jqy6bsrhwhq6pcn0xi-openssl-1.1.1l-dev --with-libexpat=/nix/store/qxfaz48ggr53s63n4n1kjr647szszikq-expat-2.2.10-dev --with-libevent=/nix/store/3wbypnkg7xry10qmzz9fs8ngalr9ldxv-libevent-2.1.12-dev --localstatedir=/var --sysconfdir=/etc --sbindir=${out}/bin --with-rootkey-file=/nix/store/993g19if5cj81vzjkrlrlxa657r35x89-dns-root-data-2019-01-11/root.key --enable-pie --enable-relro-now
+Linked libs: libevent 2.1.12-stable (it uses epoll), OpenSSL 1.1.1l  24 Aug 2021
+Linked modules: dns64 respip validator iterator
+
+BSD licensed, see LICENSE in source package for details.
+Report bugs to unbound-bugs@nlnetlabs.nl or https://github.com/NLnetLabs/unbound/issues
+Unbound config at /etc/unbound/unbound.conf:
+---------------------------
+server:
+
+  access-control: 127.0.0.1/24 allow
+  chroot: ""
+  directory: /var/lib/unbound
+  do-daemonize: no
+  interface: 127.0.0.1
+  ip-freebind: yes
+  pidfile: ""
+  tls-cert-bundle: /etc/ssl/certs/ca-certificates.crt
+  username: unbound
+  verbosity: 0
+forward-zone:
+  forward-addr: 8.8.8.8@853#dns.google
+  forward-tls-upstream: yes
+  name: .
+remote-control:
+  control-cert-file: /var/lib/unbound/unbound_control.pem
+  control-enable: no
+  control-interface: 127.0.0.1
+  control-interface: ::1
+  control-key-file: /var/lib/unbound/unbound_control.key
+  server-cert-file: /var/lib/unbound/unbound_server.pem
+  server-key-file: /var/lib/unbound/unbound_server.key
+
+---------------------------
+root      148682  0.0  0.0      0     0 ?        I    01:18   0:00 [kworker/u8:4-events_unbound]
+root      151669  0.0  0.0      0     0 ?        I    01:26   0:00 [kworker/u8:2-events_unbound]
+unbound   153199 21.0  1.2  18584 11668 ?        Ss   01:29   0:00 /nix/store/ljfd7bk8hsksddggfq7b0png3w5a3ca2-unbound-1.13.1/bin/unbound -p -d -c /etc/unbound/unbound.conf
+root      153203  0.0  0.2 223068  2084 pts/4    S+   01:29   0:00 grep unbound
+Running benchmark against 127.0.0.1, logging to /root/dns_testing/logs/1639617259/unbound_dot_nodnssec.nix.txt
+30.284881591796875
+
+Updating local DNS server to unbound_udp_dnssec.nix...
+setting up /etc...
+Version 1.13.1
+
+Configure line: --disable-static --prefix=/nix/store/lrmskvs64ahj7jli7b4zg9fmh7g5lfqi-unbound-1.13.1 --bindir=/nix/store/lrmskvs64ahj7jli7b4zg9fmh7g5lfqi-unbound-1.13.1/bin --sbindir=/nix/store/lrmskvs64ahj7jli7b4zg9fmh7g5lfqi-unbound-1.13.1/sbin --includedir=/nix/store/lrmskvs64ahj7jli7b4zg9fmh7g5lfqi-unbound-1.13.1/include --oldincludedir=/nix/store/lrmskvs64ahj7jli7b4zg9fmh7g5lfqi-unbound-1.13.1/include --mandir=/nix/store/p1y74qc47lzca9hhpl7zz8d9hfwglaqc-unbound-1.13.1-man/share/man --infodir=/nix/store/lrmskvs64ahj7jli7b4zg9fmh7g5lfqi-unbound-1.13.1/share/info --docdir=/nix/store/lrmskvs64ahj7jli7b4zg9fmh7g5lfqi-unbound-1.13.1/share/doc/unbound --libdir=/nix/store/a7qb34d4dgvh63qcj7lj28zg5rndh1i4-unbound-1.13.1-lib/lib --libexecdir=/nix/store/a7qb34d4dgvh63qcj7lj28zg5rndh1i4-unbound-1.13.1-lib/libexec --localedir=/nix/store/a7qb34d4dgvh63qcj7lj28zg5rndh1i4-unbound-1.13.1-lib/share/locale --with-ssl=/nix/store/y75rpdkr5cfr59jqy6bsrhwhq6pcn0xi-openssl-1.1.1l-dev --with-libexpat=/nix/store/qxfaz48ggr53s63n4n1kjr647szszikq-expat-2.2.10-dev --with-libevent=/nix/store/3wbypnkg7xry10qmzz9fs8ngalr9ldxv-libevent-2.1.12-dev --localstatedir=/var --sysconfdir=/etc --sbindir=${out}/bin --with-rootkey-file=/nix/store/993g19if5cj81vzjkrlrlxa657r35x89-dns-root-data-2019-01-11/root.key --enable-pie --enable-relro-now
+Linked libs: libevent 2.1.12-stable (it uses epoll), OpenSSL 1.1.1l  24 Aug 2021
+Linked modules: dns64 respip validator iterator
+
+BSD licensed, see LICENSE in source package for details.
+Report bugs to unbound-bugs@nlnetlabs.nl or https://github.com/NLnetLabs/unbound/issues
+Unbound config at /etc/unbound/unbound.conf:
+---------------------------
+server:
+
+  access-control: 127.0.0.1/24 allow
+  auto-trust-anchor-file: /var/lib/unbound/root.key
+  chroot: ""
+  directory: /var/lib/unbound
+  do-daemonize: no
+  interface: 127.0.0.1
+  ip-freebind: yes
+  pidfile: ""
+  tls-cert-bundle: /etc/ssl/certs/ca-certificates.crt
+  username: unbound
+  verbosity: 0
+forward-zone:
+  forward-addr: 8.8.8.8
+  name: .
+remote-control:
+  control-cert-file: /var/lib/unbound/unbound_control.pem
+  control-enable: no
+  control-interface: 127.0.0.1
+  control-interface: ::1
+  control-key-file: /var/lib/unbound/unbound_control.key
+  server-cert-file: /var/lib/unbound/unbound_server.pem
+  server-key-file: /var/lib/unbound/unbound_server.key
+
+---------------------------
+root      148682  0.0  0.0      0     0 ?        I    01:18   0:00 [kworker/u8:4-events_unbound]
+root      151669  0.0  0.0      0     0 ?        I    01:26   0:00 [kworker/u8:2-events_unbound]
+unbound   153933  0.0  1.3  18596 11932 ?        Ss   01:31   0:00 /nix/store/ljfd7bk8hsksddggfq7b0png3w5a3ca2-unbound-1.13.1/bin/unbound -p -d -c /etc/unbound/unbound.conf
+root      153937  0.0  0.2 223068  1984 pts/4    S+   01:31   0:00 grep unbound
+Running benchmark against 127.0.0.1, logging to /root/dns_testing/logs/1639617259/unbound_udp_dnssec.nix.txt
+55.169105529785156
+
+Updating local DNS server to unbound_udp_nodnssec.nix...
+setting up /etc...
+Version 1.13.1
+
+Configure line: --disable-static --prefix=/nix/store/lrmskvs64ahj7jli7b4zg9fmh7g5lfqi-unbound-1.13.1 --bindir=/nix/store/lrmskvs64ahj7jli7b4zg9fmh7g5lfqi-unbound-1.13.1/bin --sbindir=/nix/store/lrmskvs64ahj7jli7b4zg9fmh7g5lfqi-unbound-1.13.1/sbin --includedir=/nix/store/lrmskvs64ahj7jli7b4zg9fmh7g5lfqi-unbound-1.13.1/include --oldincludedir=/nix/store/lrmskvs64ahj7jli7b4zg9fmh7g5lfqi-unbound-1.13.1/include --mandir=/nix/store/p1y74qc47lzca9hhpl7zz8d9hfwglaqc-unbound-1.13.1-man/share/man --infodir=/nix/store/lrmskvs64ahj7jli7b4zg9fmh7g5lfqi-unbound-1.13.1/share/info --docdir=/nix/store/lrmskvs64ahj7jli7b4zg9fmh7g5lfqi-unbound-1.13.1/share/doc/unbound --libdir=/nix/store/a7qb34d4dgvh63qcj7lj28zg5rndh1i4-unbound-1.13.1-lib/lib --libexecdir=/nix/store/a7qb34d4dgvh63qcj7lj28zg5rndh1i4-unbound-1.13.1-lib/libexec --localedir=/nix/store/a7qb34d4dgvh63qcj7lj28zg5rndh1i4-unbound-1.13.1-lib/share/locale --with-ssl=/nix/store/y75rpdkr5cfr59jqy6bsrhwhq6pcn0xi-openssl-1.1.1l-dev --with-libexpat=/nix/store/qxfaz48ggr53s63n4n1kjr647szszikq-expat-2.2.10-dev --with-libevent=/nix/store/3wbypnkg7xry10qmzz9fs8ngalr9ldxv-libevent-2.1.12-dev --localstatedir=/var --sysconfdir=/etc --sbindir=${out}/bin --with-rootkey-file=/nix/store/993g19if5cj81vzjkrlrlxa657r35x89-dns-root-data-2019-01-11/root.key --enable-pie --enable-relro-now
+Linked libs: libevent 2.1.12-stable (it uses epoll), OpenSSL 1.1.1l  24 Aug 2021
+Linked modules: dns64 respip validator iterator
+
+BSD licensed, see LICENSE in source package for details.
+Report bugs to unbound-bugs@nlnetlabs.nl or https://github.com/NLnetLabs/unbound/issues
+Unbound config at /etc/unbound/unbound.conf:
+---------------------------
+server:
+
+  access-control: 127.0.0.1/24 allow
+  chroot: ""
+  directory: /var/lib/unbound
+  do-daemonize: no
+  interface: 127.0.0.1
+  ip-freebind: yes
+  pidfile: ""
+  tls-cert-bundle: /etc/ssl/certs/ca-certificates.crt
+  username: unbound
+  verbosity: 0
+forward-zone:
+  forward-addr: 8.8.8.8
+  name: .
+remote-control:
+  control-cert-file: /var/lib/unbound/unbound_control.pem
+  control-enable: no
+  control-interface: 127.0.0.1
+  control-interface: ::1
+  control-key-file: /var/lib/unbound/unbound_control.key
+  server-cert-file: /var/lib/unbound/unbound_server.pem
+  server-key-file: /var/lib/unbound/unbound_server.key
+
+---------------------------
+root      151666  0.0  0.0      0     0 ?        I    01:26   0:00 [kworker/u8:0-events_unbound]
+root      151669  0.0  0.0      0     0 ?        I    01:26   0:00 [kworker/u8:2-events_unbound]
+unbound   154669 21.0  1.2  18588 11756 ?        Ss   01:33   0:00 /nix/store/ljfd7bk8hsksddggfq7b0png3w5a3ca2-unbound-1.13.1/bin/unbound -p -d -c /etc/unbound/unbound.conf
+root      154673  0.0  0.2 223068  2088 pts/4    S+   01:33   0:00 grep unbound
+Running benchmark against 127.0.0.1, logging to /root/dns_testing/logs/1639617259/unbound_udp_nodnssec.nix.txt
+29.590368270874023
+
