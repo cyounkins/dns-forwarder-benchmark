@@ -1,0 +1,178 @@
+Creating log dir...
+Running benchmark against 8.8.8.8
+Unable to resolve cootlogix.com: The DNS response does not contain an answer to the question: cootlogix.com. IN A
+Unable to resolve dca0.com: The DNS response does not contain an answer to the question: dca0.com. IN A
+33.07008743286133
+Updating local DNS server to kresd_udp_nodnssec.nix...
+setting up /etc...
+kresd config at /nix/store/j51dpy1hs5dzypy80q3kvbk0mi8vkp4z-kresd.conf
+---------------------------
+net.listen('::1', 53, { kind = 'dns', freebind = true })
+net.listen('127.0.0.1', 53, { kind = 'dns', freebind = true })
+cache.size = 60*MB
+policy.add(policy.all(policy.FORWARD({'8.8.8.8'})))
+trust_anchors.remove('.')
+---------------------------
+knot-re+   10546  0.0  1.0  85200  9892 ?        Ss   21:08   0:00 /nix/store/dydzrlijnzhd4h82mfp7zfvpm45080pi-knot-resolver-5.4.4/bin/kresd --noninteractive -c /nix/store/dydzrlijnzhd4h82mfp7zfvpm45080pi-knot-resolver-5.4.4/lib/knot-resolver/distro-preconfig.lua -c /nix/store/j51dpy1hs5dzypy80q3kvbk0mi8vkp4z-kresd.conf
+root       10552  0.0  0.2 223120  2004 pts/2    S+   21:08   0:00 grep kresd
+Running benchmark against 127.0.0.1
+Unable to resolve cootlogix.com: The DNS response does not contain an answer to the question: cootlogix.com. IN A
+Unable to resolve dca0.com: The DNS response does not contain an answer to the question: dca0.com. IN A
+28.354406356811523
+
+Updating local DNS server to kresd_dot_nodnssec.nix...
+setting up /etc...
+kresd config at /nix/store/cs0wzsmbf4gfqpwa5mr27m1v0bx7v3rk-kresd.conf
+---------------------------
+net.listen('::1', 53, { kind = 'dns', freebind = true })
+net.listen('127.0.0.1', 53, { kind = 'dns', freebind = true })
+cache.size = 60*MB
+policy.add(policy.all(policy.TLS_FORWARD({{'8.8.8.8', hostname='dns.google'}})))
+trust_anchors.remove('.')
+---------------------------
+knot-re+   11283  0.0  1.4  88440 13244 ?        Ss   21:09   0:00 /nix/store/dydzrlijnzhd4h82mfp7zfvpm45080pi-knot-resolver-5.4.4/bin/kresd --noninteractive -c /nix/store/dydzrlijnzhd4h82mfp7zfvpm45080pi-knot-resolver-5.4.4/lib/knot-resolver/distro-preconfig.lua -c /nix/store/cs0wzsmbf4gfqpwa5mr27m1v0bx7v3rk-kresd.conf
+root       11289  0.0  0.2 223120  2052 pts/2    S+   21:09   0:00 grep kresd
+Running benchmark against 127.0.0.1
+Unable to resolve cootlogix.com: The DNS response does not contain an answer to the question: cootlogix.com. IN A
+Unable to resolve dca0.com: The DNS response does not contain an answer to the question: dca0.com. IN A
+28.93996238708496
+
+Updating local DNS server to unbound_udp_nodnssec.nix...
+setting up /etc...
+Version 1.13.2
+
+Configure line: --disable-static --prefix=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-unbound-1.13.2 --bindir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-unbound-1.13.2/bin --sbindir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-unbound-1.13.2/sbin --includedir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-unbound-1.13.2/include --oldincludedir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-unbound-1.13.2/include --mandir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-unbound-1.13.2-man/share/man --infodir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-unbound-1.13.2/share/info --docdir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-unbound-1.13.2/share/doc/unbound --libdir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-unbound-1.13.2-lib/lib --libexecdir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-unbound-1.13.2-lib/libexec --localedir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-unbound-1.13.2-lib/share/locale --with-ssl=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-openssl-1.1.1m-dev --with-libexpat=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-expat-2.4.1-dev --with-libevent=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-libevent-2.1.12-dev --localstatedir=/var --sysconfdir=/etc --sbindir=${out}/bin --with-rootkey-file=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-dns-root-data-2019-01-11/root.key --enable-pie --enable-relro-now
+Linked libs: libevent 2.1.12-stable (it uses epoll), OpenSSL 1.1.1m  14 Dec 2021
+Linked modules: dns64 respip validator iterator
+
+BSD licensed, see LICENSE in source package for details.
+Report bugs to unbound-bugs@nlnetlabs.nl or https://github.com/NLnetLabs/unbound/issues
+Unbound config at /etc/unbound/unbound.conf:
+---------------------------
+server:
+
+  access-control: 127.0.0.1/24 allow
+  chroot: ""
+  directory: /var/lib/unbound
+  do-daemonize: no
+  interface: 127.0.0.1
+  ip-freebind: yes
+  pidfile: ""
+  tls-cert-bundle: /etc/ssl/certs/ca-certificates.crt
+  username: unbound
+  verbosity: 0
+forward-zone:
+  forward-addr: 8.8.8.8
+  name: .
+remote-control:
+  control-cert-file: /var/lib/unbound/unbound_control.pem
+  control-enable: no
+  control-interface: 127.0.0.1
+  control-interface: ::1
+  control-key-file: /var/lib/unbound/unbound_control.key
+  server-cert-file: /var/lib/unbound/unbound_server.pem
+  server-key-file: /var/lib/unbound/unbound_server.key
+
+---------------------------
+root        9697  0.0  0.0      0     0 ?        I    20:53   0:00 [kworker/u8:1-events_unbound]
+unbound    12070  0.0  1.3  20040 12212 ?        Ss   21:10   0:00 /nix/store/3xglchqnlwjh00jrmhymvfil2wyj0b2a-unbound-1.13.2/bin/unbound -p -d -c /etc/unbound/unbound.conf
+root       12074  0.0  0.2 223120  2084 pts/2    S+   21:10   0:00 grep unbound
+Running benchmark against 127.0.0.1
+Unable to resolve cootlogix.com: The DNS response does not contain an answer to the question: cootlogix.com. IN A
+Unable to resolve dca0.com: The DNS response does not contain an answer to the question: dca0.com. IN A
+28.442740440368652
+
+Updating local DNS server to unbound_dot_nodnssec.nix...
+setting up /etc...
+Version 1.13.2
+
+Configure line: --disable-static --prefix=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-unbound-1.13.2 --bindir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-unbound-1.13.2/bin --sbindir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-unbound-1.13.2/sbin --includedir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-unbound-1.13.2/include --oldincludedir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-unbound-1.13.2/include --mandir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-unbound-1.13.2-man/share/man --infodir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-unbound-1.13.2/share/info --docdir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-unbound-1.13.2/share/doc/unbound --libdir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-unbound-1.13.2-lib/lib --libexecdir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-unbound-1.13.2-lib/libexec --localedir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-unbound-1.13.2-lib/share/locale --with-ssl=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-openssl-1.1.1m-dev --with-libexpat=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-expat-2.4.1-dev --with-libevent=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-libevent-2.1.12-dev --localstatedir=/var --sysconfdir=/etc --sbindir=${out}/bin --with-rootkey-file=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-dns-root-data-2019-01-11/root.key --enable-pie --enable-relro-now
+Linked libs: libevent 2.1.12-stable (it uses epoll), OpenSSL 1.1.1m  14 Dec 2021
+Linked modules: dns64 respip validator iterator
+
+BSD licensed, see LICENSE in source package for details.
+Report bugs to unbound-bugs@nlnetlabs.nl or https://github.com/NLnetLabs/unbound/issues
+Unbound config at /etc/unbound/unbound.conf:
+---------------------------
+server:
+
+  access-control: 127.0.0.1/24 allow
+  chroot: ""
+  directory: /var/lib/unbound
+  do-daemonize: no
+  interface: 127.0.0.1
+  ip-freebind: yes
+  pidfile: ""
+  tls-cert-bundle: /etc/ssl/certs/ca-certificates.crt
+  username: unbound
+  verbosity: 0
+forward-zone:
+  forward-addr: 8.8.8.8@853#dns.google
+  forward-tls-upstream: yes
+  name: .
+remote-control:
+  control-cert-file: /var/lib/unbound/unbound_control.pem
+  control-enable: no
+  control-interface: 127.0.0.1
+  control-interface: ::1
+  control-key-file: /var/lib/unbound/unbound_control.key
+  server-cert-file: /var/lib/unbound/unbound_server.pem
+  server-key-file: /var/lib/unbound/unbound_server.key
+
+---------------------------
+root        9697  0.0  0.0      0     0 ?        I    20:53   0:00 [kworker/u8:1-events_unbound]
+unbound    12800  0.0  1.3  20040 12252 ?        Ss   21:12   0:00 /nix/store/3xglchqnlwjh00jrmhymvfil2wyj0b2a-unbound-1.13.2/bin/unbound -p -d -c /etc/unbound/unbound.conf
+root       12804  0.0  0.2 223120  2104 pts/2    S+   21:12   0:00 grep unbound
+Running benchmark against 127.0.0.1
+Unable to resolve dca0.com: The DNS response does not contain an answer to the question: dca0.com. IN A
+29.22213077545166
+
+Updating local DNS server to stubby_dnsmasq_dot_nodnssec.nix...
+setting up /etc...
+Stubby 0.3.0
+stubby config at /nix/store/wrdyjwla06sg1in0v2hn418h0clmi40s-stubby.yml
+---------------------------
+resolution_type: GETDNS_RESOLUTION_STUB
+dns_transport_list:
+  - GETDNS_TRANSPORT_TLS
+appdata_dir: "/var/cache/stubby"
+tls_authentication: GETDNS_AUTHENTICATION_REQUIRED
+tls_query_padding_blocksize: 128
+edns_client_subnet_private: 1
+idle_timeout: 10000
+listen_addresses:
+  - 127.0.0.1@1053
+round_robin_upstreams: 1
+
+upstream_recursive_servers:
+- address_data: 8.8.8.8
+  tls_auth_name: "dns.google"
+
+---------------------------
+Dnsmasq version 2.85  Copyright (c) 2000-2021 Simon Kelley
+Compile time options: IPv6 GNU-getopt DBus no-UBus no-i18n IDN DHCP DHCPv6 no-Lua TFTP conntrack ipset auth cryptohash DNSSEC loop-detect inotify dumpfile
+
+This software comes with ABSOLUTELY NO WARRANTY.
+Dnsmasq is free software, and you are welcome to redistribute it
+under the terms of the GNU General Public License, version 2 or 3.
+dnsmasq config at /nix/store/kpvb1x57qr5dsvl9p459c46qr7lkxks8-dnsmasq.conf
+---------------------------
+dhcp-leasefile=/var/lib/dnsmasq/dnsmasq.leases
+
+server=127.0.0.1#1053
+
+no-resolv
+clear-on-reload
+
+---------------------------
+stubby     13539  6.0  0.7  14972  6760 ?        Ss   21:13   0:00 /nix/store/3bgzc0bxc2z858scy5gn03psiwd45xvz-stubby-0.3.0/bin/stubby -C /nix/store/wrdyjwla06sg1in0v2hn418h0clmi40s-stubby.yml
+root       13565  0.0  0.2 223120  2076 pts/2    S+   21:13   0:00 grep stubby
+dnsmasq    13550  0.0  0.3   8944  2944 ?        Ss   21:13   0:00 /nix/store/q15kiykhh4i0fx7hpiqf4xxwhlpskk6i-dnsmasq-2.85/bin/dnsmasq -k --enable-dbus --user=dnsmasq -C /nix/store/kpvb1x57qr5dsvl9p459c46qr7lkxks8-dnsmasq.conf
+root       13567  0.0  0.2 223120  2136 pts/2    S+   21:13   0:00 grep dnsmasq
+Running benchmark against 127.0.0.1
+Unable to resolve cootlogix.com: The DNS response does not contain an answer to the question: cootlogix.com. IN A
+Unable to resolve dca0.com: The DNS response does not contain an answer to the question: dca0.com. IN A
+31.43441677093506
+"0"
+"1000"
+

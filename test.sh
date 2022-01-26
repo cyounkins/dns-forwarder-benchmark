@@ -30,6 +30,15 @@ function print_unbound_config {
   echo "---------------------------"
 }
 
+function print_stubby_config {
+  stubby -V
+  CONF=$(ps aux | grep -oP '(?<= -C )(/nix.*-stubby.yml)')
+  echo "stubby config at $CONF"
+  echo "---------------------------"
+  cat "$CONF"
+  echo "---------------------------"
+}
+
 function print_dnsmasq_config {
   PROG=$(ps aux | grep -oP '(/nix[^ ]*bin/dnsmasq)')
   $PROG -v
@@ -49,7 +58,7 @@ function print_kresd_config {
 }
 
 function benchmark_target {
-  echo "Running benchmark against $1, logging to $LOG_DIR/$2.txt"
+  echo "Running benchmark against $1"
   python "$SCRIPT_DIR/bench.py" "$SCRIPT_DIR/my-domains.txt" "127.0.0.1"
 }
 
@@ -62,6 +71,7 @@ function test_unbound {
   TCPDUMP_PID=$!
   benchmark_target "127.0.0.1" "$1"
   kill $TCPDUMP_PID
+  echo ""
 }
 
 function test_dnsmasq {
@@ -75,6 +85,24 @@ function test_dnsmasq {
   kill $TCPDUMP_PID
   dig +short chaos txt hits.bind @127.0.0.1
   dig +short chaos txt misses.bind @127.0.0.1
+  echo ""
+}
+
+function test_stubby_dnsmasq {
+  switch_dns "$1"
+  systemctl restart stubby
+  systemctl restart dnsmasq
+  print_stubby_config
+  print_dnsmasq_config
+  ps aux | grep stubby
+  ps aux | grep dnsmasq
+  tcpdump -i eth0 -v -w "$LOG_DIR/$1.pcap" host 8.8.8.8 &
+  TCPDUMP_PID=$!
+  benchmark_target "127.0.0.1" "$1"
+  kill $TCPDUMP_PID
+  dig +short chaos txt hits.bind @127.0.0.1
+  dig +short chaos txt misses.bind @127.0.0.1
+  echo ""
 }
 
 function test_kresd {
@@ -88,6 +116,7 @@ function test_kresd {
   TCPDUMP_PID=$!
   benchmark_target "127.0.0.1" "$1"
   kill $TCPDUMP_PID
+  echo ""
 }
 
 setup
@@ -103,18 +132,23 @@ kill $TCPDUMP_PID
 
 cd configs || exit
 
-for config in kresd*; do
-  test_kresd "$config"
-  echo ""
-done
+test_kresd "kresd_udp_nodnssec.nix"
+test_kresd "kresd_dot_nodnssec.nix"
 
-for config in dnsmasq*; do
-  test_dnsmasq "$config"
-  echo ""
-done
+test_unbound "unbound_udp_nodnssec.nix"
+test_unbound "unbound_dot_nodnssec.nix"
 
-for config in unbound*; do
-  test_unbound "$config"
-  echo ""
-done
+test_stubby_dnsmasq "stubby_dnsmasq_dot_nodnssec.nix"
+
+#for config in kresd*; do
+#  test_kresd "$config"
+#done
+
+#for config in dnsmasq*; do
+#  test_dnsmasq "$config"
+#done
+
+#for config in unbound*; do
+#  test_unbound "$config"
+#done
 
