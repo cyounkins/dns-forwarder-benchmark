@@ -59,7 +59,7 @@ function print_kresd_config {
 
 function benchmark_target {
   echo "Running benchmark against $1"
-  python "$SCRIPT_DIR/bench.py" "$SCRIPT_DIR/my-domains.txt" "127.0.0.1"
+  python "$SCRIPT_DIR/bench.py" "$SCRIPT_DIR/my-domains.txt" "$1"
 }
 
 function test_unbound {
@@ -69,7 +69,7 @@ function test_unbound {
   ps aux | grep unbound
   tcpdump -i eth0 -v -w "$LOG_DIR/$1.pcap" host 8.8.8.8 &
   TCPDUMP_PID=$!
-  benchmark_target "127.0.0.1" "$1"
+  benchmark_target "127.0.0.1"
   kill $TCPDUMP_PID
   echo ""
 }
@@ -81,7 +81,7 @@ function test_dnsmasq {
   ps aux | grep dnsmasq
   tcpdump -i eth0 -v -w "$LOG_DIR/$1.pcap" host 8.8.8.8 &
   TCPDUMP_PID=$!
-  benchmark_target "127.0.0.1" "$1"
+  benchmark_target "127.0.0.1"
   kill $TCPDUMP_PID
   dig +short chaos txt hits.bind @127.0.0.1
   dig +short chaos txt misses.bind @127.0.0.1
@@ -98,7 +98,7 @@ function test_stubby_dnsmasq {
   ps aux | grep dnsmasq
   tcpdump -i eth0 -v -w "$LOG_DIR/$1.pcap" host 8.8.8.8 &
   TCPDUMP_PID=$!
-  benchmark_target "127.0.0.1" "$1"
+  benchmark_target "127.0.0.1"
   kill $TCPDUMP_PID
   dig +short chaos txt hits.bind @127.0.0.1
   dig +short chaos txt misses.bind @127.0.0.1
@@ -114,7 +114,7 @@ function test_kresd {
   ps aux | grep kresd
   tcpdump -i eth0 -v -w "$LOG_DIR/$1.pcap" host 8.8.8.8 &
   TCPDUMP_PID=$!
-  benchmark_target "127.0.0.1" "$1"
+  benchmark_target "127.0.0.1"
   kill $TCPDUMP_PID
   echo ""
 }
@@ -123,7 +123,7 @@ setup
 
 tcpdump -i eth0 -v -w "$LOG_DIR/control.pcap" host 8.8.8.8 &
 TCPDUMP_PID=$!
-benchmark_target "8.8.8.8" "control"
+benchmark_target "8.8.8.8"
 kill $TCPDUMP_PID
 
 #test_kresd kresd_udp_nodnssec.nix
