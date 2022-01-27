@@ -13,9 +13,14 @@ import dns.resolver
 import requests
 
 RESOLVER = '8.8.8.8'
-NUM_DOMAINS = 1000
 
 def main():
+    if len(sys.argv) < 2:
+        print(f"python {sys.argv[0]} <count>")
+        sys.exit()
+
+    num_domains = int(sys.argv[1])
+
     if not os.path.isfile('top-1m.csv'):
         # See https://s3-us-west-1.amazonaws.com/umbrella-static/index.html
         request = requests.get('https://s3-us-west-1.amazonaws.com/umbrella-static/top-1m.csv.zip')
@@ -38,7 +43,7 @@ def main():
         try:
             resolver.resolve(domain)
             filtered_domains.append(domain)
-            if len(filtered_domains) >= NUM_DOMAINS:
+            if len(filtered_domains) >= num_domains:
                 break
         except dns.exception.DNSException as e:
             pass

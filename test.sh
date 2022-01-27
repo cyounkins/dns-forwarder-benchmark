@@ -4,14 +4,13 @@
 
 SCRIPT_DIR="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 LOG_DIR=$SCRIPT_DIR/logs/$(date +%s)
-NUM_DOMAINS=1000
 
 function setup {
   echo "Creating log dir..."
   mkdir -p "$LOG_DIR"
   
   if [ ! -f "my-domains.txt" ]; then
-    python make-domains-list.py > my-domains.txt
+    python make-domains-list.py 1000 > my-domains.txt
   fi
 }
 
