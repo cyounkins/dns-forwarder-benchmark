@@ -4,6 +4,7 @@
 
 SCRIPT_DIR="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 LOG_DIR=$SCRIPT_DIR/logs/$(date +%s)
+UPSTREAM_IP="8.8.8.8"
 
 function setup {
   echo "Creating log dir..."
@@ -66,7 +67,7 @@ function test_unbound {
   systemctl restart unbound
   print_unbound_config
   ps aux | grep unbound
-  tcpdump -i eth0 -v -w "$LOG_DIR/$1.pcap" host 8.8.8.8 2>&1 &
+  tcpdump -i eth0 -v -w "$LOG_DIR/$1.pcap" host "$UPSTREAM_IP" 2>&1 &
   TCPDUMP_PID=$!
   benchmark_target "127.0.0.1"
   kill $TCPDUMP_PID
@@ -78,7 +79,7 @@ function test_dnsmasq {
   systemctl restart dnsmasq
   print_dnsmasq_config
   ps aux | grep dnsmasq
-  tcpdump -i eth0 -v -w "$LOG_DIR/$1.pcap" host 8.8.8.8 2>&1 &
+  tcpdump -i eth0 -v -w "$LOG_DIR/$1.pcap" host "$UPSTREAM_IP" 2>&1 &
   TCPDUMP_PID=$!
   benchmark_target "127.0.0.1"
   kill $TCPDUMP_PID
@@ -95,7 +96,7 @@ function test_stubby_dnsmasq {
   print_dnsmasq_config
   ps aux | grep stubby
   ps aux | grep dnsmasq
-  tcpdump -i eth0 -v -w "$LOG_DIR/$1.pcap" host 8.8.8.8 2>&1 &
+  tcpdump -i eth0 -v -w "$LOG_DIR/$1.pcap" host "$UPSTREAM_IP" 2>&1 &
   TCPDUMP_PID=$!
   benchmark_target "127.0.0.1"
   kill $TCPDUMP_PID
@@ -111,7 +112,7 @@ function test_kresd {
   systemctl start kresd@1.service
   print_kresd_config
   ps aux | grep kresd
-  tcpdump -i eth0 -v -w "$LOG_DIR/$1.pcap" host 8.8.8.8 2>&1 &
+  tcpdump -i eth0 -v -w "$LOG_DIR/$1.pcap" host "$UPSTREAM_IP" 2>&1 &
   TCPDUMP_PID=$!
   benchmark_target "127.0.0.1"
   kill $TCPDUMP_PID
@@ -120,14 +121,10 @@ function test_kresd {
 
 setup
 
-tcpdump -i eth0 -v -w "$LOG_DIR/control.pcap" host 8.8.8.8 2>&1 &
+tcpdump -i eth0 -v -w "$LOG_DIR/control.pcap" host "$UPSTREAM_IP" 2>&1 &
 TCPDUMP_PID=$!
 benchmark_target "8.8.8.8"
 kill $TCPDUMP_PID
-
-#test_kresd kresd_udp_nodnssec.nix
-
-#exit
 
 cd configs || exit
 
