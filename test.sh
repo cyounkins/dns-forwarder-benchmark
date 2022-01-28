@@ -57,6 +57,20 @@ function print_kresd_config {
   echo "---------------------------"
 }
 
+function print_connections_to_upstream {
+  echo "Connections to upstream:"
+  ss -an4 | grep "$UPSTREAM_IP" | wc -l
+}
+
+function wait_for_zero_connections_to_upstream {
+  echo "Waiting for zero connections to upstream"
+  CONNECTIONS=1
+  while [ $CONNECTIONS -gt 0 ]; do
+    CONNECTIONS=$(ss -an4 | grep "$UPSTREAM_IP" | wc -l)
+    sleep 1
+  done
+}
+
 function benchmark_target {
   echo "Running benchmark against $1"
   python "$SCRIPT_DIR/bench.py" "$SCRIPT_DIR/my-domains.txt" "$1"
@@ -66,11 +80,12 @@ function test_unbound {
   switch_dns "$1"
   systemctl restart unbound
   print_unbound_config
-  ps aux | grep unbound
+  wait_for_zero_connections_to_upstream
   tcpdump -i eth0 -v -w "$LOG_DIR/$1.pcap" host "$UPSTREAM_IP" 2>&1 &
   TCPDUMP_PID=$!
   benchmark_target "127.0.0.1"
-  kill $TCPDUMP_PID
+  kill $TCPDUMP_PID; sleep 1
+  print_connections_to_upstream
   echo ""
 }
 
@@ -78,11 +93,12 @@ function test_dnsmasq {
   switch_dns "$1"
   systemctl restart dnsmasq
   print_dnsmasq_config
-  ps aux | grep dnsmasq
+  wait_for_zero_connections_to_upstream
   tcpdump -i eth0 -v -w "$LOG_DIR/$1.pcap" host "$UPSTREAM_IP" 2>&1 &
   TCPDUMP_PID=$!
   benchmark_target "127.0.0.1"
-  kill $TCPDUMP_PID
+  kill $TCPDUMP_PID; sleep 1
+  print_connections_to_upstream
   dig +short chaos txt hits.bind @127.0.0.1
   dig +short chaos txt misses.bind @127.0.0.1
   echo ""
@@ -94,12 +110,12 @@ function test_stubby_dnsmasq {
   systemctl restart dnsmasq
   print_stubby_config
   print_dnsmasq_config
-  ps aux | grep stubby
-  ps aux | grep dnsmasq
+  wait_for_zero_connections_to_upstream
   tcpdump -i eth0 -v -w "$LOG_DIR/$1.pcap" host "$UPSTREAM_IP" 2>&1 &
   TCPDUMP_PID=$!
   benchmark_target "127.0.0.1"
-  kill $TCPDUMP_PID
+  kill $TCPDUMP_PID; sleep 1
+  print_connections_to_upstream
   dig +short chaos txt hits.bind @127.0.0.1
   dig +short chaos txt misses.bind @127.0.0.1
   echo ""
@@ -111,11 +127,12 @@ function test_kresd {
   rm /var/cache/knot-resolver/*
   systemctl start kresd@1.service
   print_kresd_config
-  ps aux | grep kresd
+  wait_for_zero_connections_to_upstream
   tcpdump -i eth0 -v -w "$LOG_DIR/$1.pcap" host "$UPSTREAM_IP" 2>&1 &
   TCPDUMP_PID=$!
   benchmark_target "127.0.0.1"
-  kill $TCPDUMP_PID
+  kill $TCPDUMP_PID; sleep 1
+  print_connections_to_upstream
   echo ""
 }
 
@@ -123,18 +140,19 @@ setup
 
 tcpdump -i eth0 -v -w "$LOG_DIR/control.pcap" host "$UPSTREAM_IP" 2>&1 &
 TCPDUMP_PID=$!
-benchmark_target "8.8.8.8"
-kill $TCPDUMP_PID
+benchmark_target "$UPSTREAM_IP"
+kill $TCPDUMP_PID; sleep 1
+print_connections_to_upstream
 
 cd configs || exit
 
-test_kresd "kresd_udp_nodnssec.nix"
-test_kresd "kresd_dot_nodnssec.nix"
+#test_kresd "kresd_udp_nodnssec.nix"
+#test_kresd "kresd_dot_nodnssec.nix"
 
-test_unbound "unbound_udp_nodnssec.nix"
+#test_unbound "unbound_udp_nodnssec.nix"
 test_unbound "unbound_dot_nodnssec.nix"
 
-test_stubby_dnsmasq "stubby_dnsmasq_dot_nodnssec.nix"
+#test_stubby_dnsmasq "stubby_dnsmasq_dot_nodnssec.nix"
 
 #for config in kresd*; do
 #  test_kresd "$config"
