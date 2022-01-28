@@ -57,6 +57,15 @@ function print_kresd_config {
   echo "---------------------------"
 }
 
+function wait_for_zero_connections_to_upstream {
+  echo "Waiting for zero connections to upstream"
+  CONNECTIONS=1
+  while [ $CONNECTIONS -gt 0 ]; do
+    CONNECTIONS=$(ss -an4 | grep "$UPSTREAM_IP" | wc -l)
+    sleep 1
+  done
+}
+
 function print_tcp_connections_opened {
   echo "TCP connections opened to upstream:"
   tcpdump -r "$1" "dst $UPSTREAM_IP and tcp[tcpflags] == tcp-syn" | wc -l
@@ -71,6 +80,7 @@ function test_unbound {
   switch_dns "$1"
   systemctl restart unbound
   print_unbound_config
+  wait_for_zero_connections_to_upstream
   PCAP_FILE="$LOG_DIR/$1.pcap"
   tcpdump -i eth0 -U -v -w "$PCAP_FILE" host "$UPSTREAM_IP" 2>&1 &
   TCPDUMP_PID=$!
@@ -86,6 +96,7 @@ function test_dnsmasq {
   switch_dns "$1"
   systemctl restart dnsmasq
   print_dnsmasq_config
+  wait_for_zero_connections_to_upstream
   PCAP_FILE="$LOG_DIR/$1.pcap"
   tcpdump -i eth0 -U -v -w "$PCAP_FILE" host "$UPSTREAM_IP" 2>&1 &
   TCPDUMP_PID=$!
@@ -105,6 +116,7 @@ function test_stubby_dnsmasq {
   systemctl restart dnsmasq
   print_stubby_config
   print_dnsmasq_config
+  wait_for_zero_connections_to_upstream
   PCAP_FILE="$LOG_DIR/$1.pcap"
   tcpdump -i eth0 -U -v -w "$PCAP_FILE" host "$UPSTREAM_IP" 2>&1 &
   TCPDUMP_PID=$!
@@ -124,6 +136,7 @@ function test_kresd {
   rm /var/cache/knot-resolver/*
   systemctl start kresd@1.service
   print_kresd_config
+  wait_for_zero_connections_to_upstream
   PCAP_FILE="$LOG_DIR/$1.pcap"
   tcpdump -i eth0 -U -v -w "$PCAP_FILE" host "$UPSTREAM_IP" 2>&1 &
   TCPDUMP_PID=$!
@@ -138,6 +151,7 @@ function test_kresd {
 setup
 
 switch_dns "control.nix"
+wait_for_zero_connections_to_upstream
 PCAP_FILE="$LOG_DIR/control.pcap"
 tcpdump -i eth0 -U -v -w "$PCAP_FILE" host "$UPSTREAM_IP" 2>&1 &
 TCPDUMP_PID=$!
@@ -149,11 +163,11 @@ print_tcp_connections_opened "$PCAP_FILE"
 
 cd configs || exit
 
-#test_unbound "unbound_udp_nodnssec.nix"
-#test_unbound "unbound_dot_nodnssec.nix"
+test_unbound "unbound_udp_nodnssec.nix"
+test_unbound "unbound_dot_nodnssec.nix"
 
-#test_kresd "kresd_udp_nodnssec.nix"
-#test_kresd "kresd_dot_nodnssec.nix"
+test_kresd "kresd_udp_nodnssec.nix"
+test_kresd "kresd_dot_nodnssec.nix"
 
 test_stubby_dnsmasq "stubby_dnsmasq_dot_nodnssec.nix"
 
