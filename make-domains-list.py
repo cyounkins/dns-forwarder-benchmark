@@ -13,6 +13,9 @@ import dns.resolver
 import requests
 
 RESOLVER = '8.8.8.8'
+BLOCKLIST = set([
+    'quantcount.com', # Large record, dnspython retries with TCP
+])
 
 def main():
     if len(sys.argv) < 2:
@@ -39,6 +42,8 @@ def main():
     filtered_domains = []
     for domain in unfiltered_domains:
         if domain.count('.') != 1:
+            continue
+        if domain in BLOCKLIST:
             continue
         try:
             resolver.resolve(domain)
