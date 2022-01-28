@@ -33,7 +33,13 @@ def main():
         delta = time.time() - t0
         times.append(delta)
 
-    print(statistics.median(times) * 1000)
+    print("Median:", round(statistics.median(times) * 1000, 1))
+    print("Mean:", round(statistics.mean(times) * 1000, 1))
+
+    percentiles = statistics.quantiles(times, n=100)
+    assert(len(percentiles) == 99)
+    print("P90:", round(percentiles[90 - 2] * 1000, 1))
+    print("P95:", round(percentiles[95 - 2] * 1000, 1))
 
 
 if __name__ == '__main__':
