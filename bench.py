@@ -33,8 +33,8 @@ def main():
         delta = time.time() - t0
         times.append(delta)
 
-    print("Median:", round(statistics.median(times) * 1000, 1))
     print("Mean:", round(statistics.mean(times) * 1000, 1))
+    print("Median:", round(statistics.median(times) * 1000, 1))
 
     percentiles = statistics.quantiles(times, n=100)
     assert(len(percentiles) == 99)

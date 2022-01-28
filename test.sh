@@ -72,7 +72,7 @@ function test_unbound {
   systemctl restart unbound
   print_unbound_config
   PCAP_FILE="$LOG_DIR/$1.pcap"
-  tcpdump -i eth0 -v -w "$PCAP_FILE" host "$UPSTREAM_IP" 2>&1 &
+  tcpdump -i eth0 -U -v -w "$PCAP_FILE" host "$UPSTREAM_IP" 2>&1 &
   TCPDUMP_PID=$!
   sleep 1
   benchmark_target "127.0.0.1"
@@ -87,7 +87,7 @@ function test_dnsmasq {
   systemctl restart dnsmasq
   print_dnsmasq_config
   PCAP_FILE="$LOG_DIR/$1.pcap"
-  tcpdump -i eth0 -v -w "$PCAP_FILE" host "$UPSTREAM_IP" 2>&1 &
+  tcpdump -i eth0 -U -v -w "$PCAP_FILE" host "$UPSTREAM_IP" 2>&1 &
   TCPDUMP_PID=$!
   sleep 1
   benchmark_target "127.0.0.1"
@@ -106,7 +106,7 @@ function test_stubby_dnsmasq {
   print_stubby_config
   print_dnsmasq_config
   PCAP_FILE="$LOG_DIR/$1.pcap"
-  tcpdump -i eth0 -v -w "$PCAP_FILE" host "$UPSTREAM_IP" 2>&1 &
+  tcpdump -i eth0 -U -v -w "$PCAP_FILE" host "$UPSTREAM_IP" 2>&1 &
   TCPDUMP_PID=$!
   sleep 1
   benchmark_target "127.0.0.1"
@@ -125,7 +125,7 @@ function test_kresd {
   systemctl start kresd@1.service
   print_kresd_config
   PCAP_FILE="$LOG_DIR/$1.pcap"
-  tcpdump -i eth0 -v -w "$PCAP_FILE" host "$UPSTREAM_IP" 2>&1 &
+  tcpdump -i eth0 -U -v -w "$PCAP_FILE" host "$UPSTREAM_IP" 2>&1 &
   TCPDUMP_PID=$!
   sleep 1
   benchmark_target "127.0.0.1"
@@ -139,7 +139,7 @@ setup
 
 switch_dns "control.nix"
 PCAP_FILE="$LOG_DIR/control.pcap"
-tcpdump -i eth0 -v -w "$PCAP_FILE" host "$UPSTREAM_IP" 2>&1 &
+tcpdump -i eth0 -U -v -w "$PCAP_FILE" host "$UPSTREAM_IP" 2>&1 &
 TCPDUMP_PID=$!
 sleep 1
 benchmark_target "$UPSTREAM_IP"
@@ -149,13 +149,13 @@ print_tcp_connections_opened "$PCAP_FILE"
 
 cd configs || exit
 
+#test_unbound "unbound_udp_nodnssec.nix"
+#test_unbound "unbound_dot_nodnssec.nix"
+
 #test_kresd "kresd_udp_nodnssec.nix"
 #test_kresd "kresd_dot_nodnssec.nix"
 
-#test_unbound "unbound_udp_nodnssec.nix"
-test_unbound "unbound_dot_nodnssec.nix"
-
-#test_stubby_dnsmasq "stubby_dnsmasq_dot_nodnssec.nix"
+test_stubby_dnsmasq "stubby_dnsmasq_dot_nodnssec.nix"
 
 #for config in kresd*; do
 #  test_kresd "$config"
