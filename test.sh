@@ -61,7 +61,7 @@ function wait_for_zero_connections_to_upstream {
   echo "Waiting for zero connections to upstream"
   CONNECTIONS=1
   while [ $CONNECTIONS -gt 0 ]; do
-    CONNECTIONS=$(ss -an4 | grep "$UPSTREAM_IP" | wc -l)
+    CONNECTIONS=$(ss -an4 | grep -F "$UPSTREAM_IP" | wc -l)
     sleep 1
   done
 }
@@ -169,6 +169,7 @@ test_unbound "unbound_dot_nodnssec.nix"
 test_kresd "kresd_udp_nodnssec.nix"
 test_kresd "kresd_dot_nodnssec.nix"
 
+test_dnsmasq "dnsmasq_udp_nodnssec.nix"
 test_stubby_dnsmasq "stubby_dnsmasq_dot_nodnssec.nix"
 
 #for config in kresd*; do
