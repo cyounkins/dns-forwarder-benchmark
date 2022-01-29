@@ -11,7 +11,7 @@ function setup {
   mkdir -p "$LOG_DIR"
   
   if [ ! -f "my-domains.txt" ]; then
-    python make-domains-list.py 1000 > my-domains.txt
+    python make-domains-list.py 2000 > my-domains.txt
   fi
 }
 
